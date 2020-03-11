@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodingConnected.Composition\CodingConnected.Composition.csproj" />
+    <ProjectReference Include="..\CodingConnected.Composition.Example.Interfaces\CodingConnected.Composition.Example.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

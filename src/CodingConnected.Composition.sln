@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.NETFramework", "Examples\CodingConnected.Composition.Example.NETFramework\CodingConnected.Composition.Example.NETFramework.csproj", "{796E594C-0648-4BFB-9C65-36A8947ACA5C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{94D79702-95AF-4B4E-8ECD-77269200019E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition", "CodingConnected.Composition\CodingConnected.Composition.csproj", "{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.NetStandardLib", "Examples\CodingConnected.Composition.Example.NetStandardLib\CodingConnected.Composition.Example.NetStandardLib.csproj", "{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.Interfaces", "Examples\CodingConnected.Composition.Example.Interfaces\CodingConnected.Composition.Example.Interfaces.csproj", "{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C08950C3-DDF8-42BA-BBB9-B485F8EDBEA0}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {006F947F-5ABB-4E76-BDD0-166E95197AC1}
+	EndGlobalSection
+EndGlobal

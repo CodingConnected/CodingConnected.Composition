@@ -22,6 +22,7 @@ namespace CodingConnected.Composition
     public static class Composer
     {
         internal static List<ExportedType> ExportedTypes { get; } = new List<ExportedType>();
+        internal static Dictionary<Type, object> SingletonInstances { get; } = new Dictionary<Type, object>();
 
         public static void LoadExports(Assembly assembly)
         {
@@ -35,40 +36,64 @@ namespace CodingConnected.Composition
             }
         }
 
+        internal static object GetSingleton(Type type)
+        {
+            if (!SingletonInstances.ContainsKey(type))
+            {
+                SingletonInstances.Add(type, Activator.CreateInstance(type));
+            }
+
+            return SingletonInstances[type];
+        }
+
         public static void Compose(object root)
         {
+            if (root == null) return;
+
             foreach (var prop in root.GetType().GetProperties())
             {
-                var attribs = prop.GetCustomAttributes();
+                var attribs = prop.GetCustomAttributes().ToArray();
+                if (attribs.Length == 0 && !prop.PropertyType.IsValueType && prop.PropertyType != typeof(string))
+                {
+                    Compose(prop.GetValue(root));
+                }
                 foreach (var attrib in attribs)
                 {
-                    if (attrib is ImportAttribute ia)
+                    switch (attrib)
                     {
-                        var exT = ExportedTypes.FirstOrDefault(x => x.ExposedType == prop.PropertyType);
-                        if (exT == null)
+                        case ImportAttribute ia:
                         {
-                            throw new Exception();
+                            var exT = ExportedTypes.Where(x => x.ExposedType == prop.PropertyType).ToArray();
+                            if (exT.Length == 0)
+                            {
+                                throw new Exception($"No exported type matched imported type {prop.PropertyType.FullName}");
+                            }
+                            if (exT.Length > 1)
+                            {
+                                throw new AmbiguousMatchException($"More than one exported types match imported type {prop.PropertyType.FullName}");
+                            }
+                            var instance = GetSingleton(exT[0].ActualType);
+                            prop.SetValue(root, instance);
+                            Compose(instance);
+                            break;
                         }
-                        var instance = Activator.CreateInstance(exT.ActualType);
-                        prop.SetValue(root, instance);
-                        Compose(instance);
-                    }
-                    if (attrib is ImportManyAttribute ima)
-                    {
-                        var exT = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType);
-                        if (!exT.Any())
+                        case ImportManyAttribute ima:
                         {
-                            throw new Exception();
+                            var exT = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType).ToArray();
+                            if (exT.Length == 0)
+                            {
+                                throw new Exception($"No exported type matched imported type {ima.ImportedType.FullName}");
+                            }
+                            var constructedListType = typeof(List<>).MakeGenericType(ima.ImportedType);
+                            var instance = (IList)Activator.CreateInstance(constructedListType);
+                            foreach (var t in exT)
+                            {
+                                instance.Add(Activator.CreateInstance(t.ActualType));
+                            }
+                            prop.SetValue(root, instance);
+                            Compose(instance);
+                            break;
                         }
-                        var listType = typeof(List<>);
-                        var constructedListType = listType.MakeGenericType(ima.ImportedType);
-                        var instance = (IList)Activator.CreateInstance(constructedListType);
-                        foreach (var t in exT)
-                        {
-                            instance.Add(Activator.CreateInstance(t.ActualType));
-                        }
-                        prop.SetValue(root, instance);
-                        Compose(instance);
                     }
                 }
             }

@@ -2,6 +2,9 @@
 
 namespace CodingConnected.Composition.Annotations
 {
+    /// <summary>
+    /// When tagged, 
+    /// </summary>
     public class ImportManyAttribute : Attribute
     {
         public Type ImportedType { get; }

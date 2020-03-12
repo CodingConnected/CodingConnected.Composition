@@ -33,6 +33,7 @@ namespace CodingConnected.Composition.Example.NETFramework
                 Composer.LoadExports(Assembly.LoadFrom("..\\..\\..\\CodingConnected.Composition.Example.NetStandardLib\\bin\\Debug\\netstandard2.0\\CodingConnected.Composition.Example.NetStandardLib.dll"));
             }
 
+            var extra = new PolishNotationComponent();
             var main = new MainComponent();
             Composer.Compose(main);
 

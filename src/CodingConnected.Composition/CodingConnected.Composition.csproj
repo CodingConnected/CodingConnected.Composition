@@ -2,6 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Menno van der Woude</Authors>
+    <Company>CodingConnected. e.U.</Company>
+    <Description>A minuscule parts composition library.</Description>
+    <Copyright>Copyright (C) 2020 Menno van der Woude, CodingConnected e.U.</Copyright>
+    <PackageProjectUrl>https://github.com/CodingConnected/CodingConnected.Composition</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/CodingConnected/CodingConnected.Composition</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

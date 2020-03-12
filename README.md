@@ -17,8 +17,10 @@ I am working on.
 The library currently facilitates mostly the following use case:
 
 - Allowing an application to dynamically load classes, either 
-into a single property or into a list. Currently, 
-exported classes should not have depencies not shared with the main application.
+into a single property or into a list. When it is a single 
+property, a singleton is currently assumed. Currently, 
+exported classes should not have depencies not shared with 
+the main application.
 
 For now, see the example application for, well, an example. It 
 basically follows along the same lines as the example in 

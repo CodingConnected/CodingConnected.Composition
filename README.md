@@ -14,7 +14,7 @@ rather to have a very compact and easy to use library to add
 plugin and composition functionality to WPF and .NET Core apps
 I am working on. 
 
-The library currently facilitates mostly the following use case:
+The library currently facilitates mostly a single use case:
 
 - Allowing an application to dynamically load classes, either 
 into a single property or into a list. When it is a single 

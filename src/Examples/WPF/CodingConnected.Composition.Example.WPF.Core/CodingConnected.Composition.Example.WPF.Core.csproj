@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CodingConnected.Composition\CodingConnected.Composition.csproj" />
+    <ProjectReference Include="..\CodingConnected.Composition.Example.WPF.Core.MVVM\CodingConnected.Composition.Example.WPF.Core.MVVM.csproj" />
+    <ProjectReference Include="..\CodingConnected.Composition.Example.WPF.IPlugins\CodingConnected.Composition.Example.WPF.IPlugins.csproj" />
+  </ItemGroup>
+
+</Project>

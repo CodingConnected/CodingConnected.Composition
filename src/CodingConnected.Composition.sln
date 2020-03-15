@@ -22,6 +22,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{0038038B-8A8D-41A4-90BC-86914431F337}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{4AC464DB-16AA-4F17-8A5F-B838BB4EE968}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.WPF.Core", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core\CodingConnected.Composition.Example.WPF.Core.csproj", "{6672D603-C7C4-4AB7-BAC4-9C3887612672}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.WPF.IPlugins", "Examples\WPF\CodingConnected.Composition.Example.WPF.IPlugins\CodingConnected.Composition.Example.WPF.IPlugins.csproj", "{921EE4AC-959D-4416-AEE8-CDA0B34A7433}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.WPF.Core.Plugin", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.Plugin\CodingConnected.Composition.Example.WPF.Core.Plugin.csproj", "{178F82F0-2685-47E8-B672-B06C1B8777FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.WPF.Core.MVVM", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.MVVM\CodingConnected.Composition.Example.WPF.Core.MVVM.csproj", "{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +56,22 @@ Global
 		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0038038B-8A8D-41A4-90BC-86914431F337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0038038B-8A8D-41A4-90BC-86914431F337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6672D603-C7C4-4AB7-BAC4-9C3887612672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6672D603-C7C4-4AB7-BAC4-9C3887612672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6672D603-C7C4-4AB7-BAC4-9C3887612672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6672D603-C7C4-4AB7-BAC4-9C3887612672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{921EE4AC-959D-4416-AEE8-CDA0B34A7433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{921EE4AC-959D-4416-AEE8-CDA0B34A7433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{921EE4AC-959D-4416-AEE8-CDA0B34A7433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{921EE4AC-959D-4416-AEE8-CDA0B34A7433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{178F82F0-2685-47E8-B672-B06C1B8777FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{178F82F0-2685-47E8-B672-B06C1B8777FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{178F82F0-2685-47E8-B672-B06C1B8777FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{178F82F0-2685-47E8-B672-B06C1B8777FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +80,11 @@ Global
 		{796E594C-0648-4BFB-9C65-36A8947ACA5C} = {94D79702-95AF-4B4E-8ECD-77269200019E}
 		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476} = {94D79702-95AF-4B4E-8ECD-77269200019E}
 		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+		{4AC464DB-16AA-4F17-8A5F-B838BB4EE968} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+		{6672D603-C7C4-4AB7-BAC4-9C3887612672} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
+		{921EE4AC-959D-4416-AEE8-CDA0B34A7433} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
+		{178F82F0-2685-47E8-B672-B06C1B8777FC} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
+		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {006F947F-5ABB-4E76-BDD0-166E95197AC1}

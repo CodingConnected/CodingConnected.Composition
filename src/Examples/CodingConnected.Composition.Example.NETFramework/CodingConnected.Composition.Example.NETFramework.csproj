@@ -44,7 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddCommand.cs" />
-    <Compile Include="MainComponent.cs" />
+    <Compile Include="Calculator.cs" />
+    <Compile Include="CalculationService.cs" />
+    <Compile Include="ReversePolishNotationCalculationService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubCommand.cs" />

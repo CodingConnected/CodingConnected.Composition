@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using CodingConnected.Composition.Annotations;
@@ -11,11 +12,13 @@ namespace CodingConnected.Composition
     {
         public Type ActualType { get; }
         public Type ExposedType { get; }
+        public bool Many { get; }
 
-        public ExportedType(Type actualType, Type exposedType)
+        public ExportedType(Type actualType, Type exposedType, bool many)
         {
             ActualType = actualType;
             ExposedType = exposedType;
+            Many = many;
         }
     }
 
@@ -29,9 +32,17 @@ namespace CodingConnected.Composition
             foreach (var type in assembly.GetExportedTypes())
             {
                 var custom = type.GetCustomAttributes();
-                foreach (var attrib in custom.Where(x => x is ExportAttribute))
+                foreach (var attrib in custom)
                 {
-                    ExportedTypes.Add(new ExportedType(type, ((ExportAttribute)attrib).ExportedType));
+                    switch (attrib)
+                    {
+                        case ExportAttribute ea:
+                            ExportedTypes.Add(new ExportedType(type, ea.ExportedType, false));
+                            break;
+                        case ExportManyAttribute ema:
+                            ExportedTypes.Add(new ExportedType(type, ema.ExportedType, true));
+                            break;
+                    }
                 }
             }
         }
@@ -52,48 +63,68 @@ namespace CodingConnected.Composition
 
             foreach (var prop in root.GetType().GetProperties())
             {
+                if (!prop.PropertyType.IsGenericType) continue;
+
+                var browsable = prop.GetCustomAttribute<BrowsableAttribute>();
+                if (browsable != null && !browsable.Browsable) continue;
+
                 var attribs = prop.GetCustomAttributes().ToArray();
                 if (attribs.Length == 0 && !prop.PropertyType.IsValueType && prop.PropertyType != typeof(string))
                 {
                     Compose(prop.GetValue(root));
                 }
+
                 foreach (var attrib in attribs)
                 {
+                    ExportedType[] exportedTypes;
                     switch (attrib)
                     {
                         case ImportAttribute ia:
-                        {
-                            var exT = ExportedTypes.Where(x => x.ExposedType == prop.PropertyType).ToArray();
-                            if (exT.Length == 0)
+                            exportedTypes = ExportedTypes.Where(x => x.ExposedType == prop.PropertyType).ToArray();
+                            if (exportedTypes.Length == 0)
                             {
                                 throw new Exception($"No exported type matched imported type {prop.PropertyType.FullName}");
                             }
-                            if (exT.Length > 1)
+                            if (exportedTypes.Length > 1)
                             {
                                 throw new AmbiguousMatchException($"More than one exported types match imported type {prop.PropertyType.FullName}");
                             }
-                            var instance = GetSingleton(exT[0].ActualType);
+                            object instance;
+                            switch (exportedTypes[0].Many)
+                            {
+                                case true:
+                                    instance = Activator.CreateInstance(exportedTypes[0].ActualType);
+                                    break;
+                                default:
+                                    instance = GetSingleton(exportedTypes[0].ActualType);
+                                    break;
+                            }
                             prop.SetValue(root, instance);
                             Compose(instance);
                             break;
-                        }
                         case ImportManyAttribute ima:
-                        {
-                            var exT = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType).ToArray();
-                            if (exT.Length == 0)
+                            exportedTypes = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType).ToArray();
+                            if (exportedTypes.Length == 0)
                             {
                                 throw new Exception($"No exported type matched imported type {ima.ImportedType.FullName}");
                             }
                             var constructedListType = typeof(List<>).MakeGenericType(ima.ImportedType);
-                            var instance = (IList)Activator.CreateInstance(constructedListType);
-                            foreach (var t in exT)
+                            var instanceList = (IList)Activator.CreateInstance(constructedListType);
+                            foreach (var t in exportedTypes)
                             {
-                                instance.Add(Activator.CreateInstance(t.ActualType));
+                                var listItem = Activator.CreateInstance(t.ActualType);
+                                Compose(listItem);
+                                instanceList.Add(listItem);
                             }
-                            prop.SetValue(root, instance);
-                            Compose(instance);
+                            try
+                            {
+                                prop.SetValue(root, instanceList);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new Exception("No setter found on property " + prop.Name);
+                            }
                             break;
-                        }
                     }
                 }
             }

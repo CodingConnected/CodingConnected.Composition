@@ -5,31 +5,28 @@ using CodingConnected.Composition.Example.Interfaces;
 
 namespace CodingConnected.Composition.Example.NETFramework
 {
-    class PolishNotationComponent
+    /// <summary>
+    /// A simple service able to process calculation commands with
+    /// two operands and a single operator in between.
+    /// If processing a command fails, the class will try processing
+    /// the command with its personal assistent, the RPN service.
+    /// Note that the RPN service internally uses the same instance
+    /// of ICalculator, provided through composition.
+    /// </summary>
+    class CalculationService
     {
+        /// <summary>
+        /// This property will be set through composition
+        /// </summary>
         [Import]
         public ICalculator Calculator { get; set; }
 
-        public double ProcessCommand(string command)
-        {
-            var specialCommandData = Regex.Match(command, @"\s*(?<op>[^0-9])\s+(?<a>[0-9\.]+)\s+(?<b>[0-9\.]+)");
-            if (!specialCommandData.Success)
-            {
-                throw new InvalidOperationException("Incorrect command parameters for polish notation");
-            }
-            var a = double.Parse(specialCommandData.Groups["a"].Value);
-            var b = double.Parse(specialCommandData.Groups["b"].Value);
-            var op = specialCommandData.Groups["op"].Value;
-            return Calculator.ExecuteCommand(a, b, op);
-        }
-    }
-
-    class MainComponent
-    {
-        [Import]
-        public ICalculator Calculator { get; set; }
-
-        public PolishNotationComponent MyPolishNotationComponent { get; set; }
+        /// <summary>
+        /// The RPN service has its own ICalculator property, which, through
+        /// composition, is set to the same instance as the Calculator
+        /// property of this class.
+        /// </summary>
+        public ReversePolishNotationCalculationService RPNCalculationService { get; set; }
 
         public double ParseCommand(string command)
         {
@@ -38,7 +35,7 @@ namespace CodingConnected.Composition.Example.NETFramework
             {
                 try
                 {
-                    return MyPolishNotationComponent.ProcessCommand(command);
+                    return RPNCalculationService.ProcessCommand(command);
                 }
                 catch
                 {
@@ -54,9 +51,9 @@ namespace CodingConnected.Composition.Example.NETFramework
             }
         }
 
-        public MainComponent()
+        public CalculationService()
         {
-            MyPolishNotationComponent = new PolishNotationComponent();
+            RPNCalculationService = new ReversePolishNotationCalculationService();
         }
     }
 }

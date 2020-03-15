@@ -1,30 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using CodingConnected.Composition.Annotations;
-using CodingConnected.Composition.Example.Interfaces;
 
 namespace CodingConnected.Composition.Example.NETFramework
 {
-    [Export(typeof(ICalculator))]
-    public class Calculator : ICalculator
-    {
-        [ImportMany(typeof(ICalculateCommand))]
-        public IEnumerable<ICalculateCommand> Commands { get; set; }
-
-        public double ExecuteCommand(double a, double b, string op)
-        {
-            var c = Commands.FirstOrDefault(x => x.Operator == op);
-            if (c == null) throw new InvalidOperationException("No such command!");
-            return c.Calculate(a, b);
-        }
-    }
-
     class Program
     {
-
         static void Main(string[] args)
         {
             Composer.LoadExports(Assembly.GetEntryAssembly());
@@ -33,8 +15,7 @@ namespace CodingConnected.Composition.Example.NETFramework
                 Composer.LoadExports(Assembly.LoadFrom("..\\..\\..\\CodingConnected.Composition.Example.NetStandardLib\\bin\\Debug\\netstandard2.0\\CodingConnected.Composition.Example.NetStandardLib.dll"));
             }
 
-            var extra = new PolishNotationComponent();
-            var main = new MainComponent();
+            var main = new CalculationService();
             Composer.Compose(main);
 
             Console.WriteLine($"Loaded {((Calculator)main.Calculator).Commands.Count()} commands");

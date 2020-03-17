@@ -1,5 +1,5 @@
 ﻿using CodingConnected.Composition.Annotations;
-using CodingConnected.Composition.Example.WPF.Plugins;
+using CodingConnected.Composition.Example.WPF.IPlugins;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -10,7 +10,7 @@ namespace CodingConnected.Composition.Example.WPF.Core
         private static IPluginsHost _default;
 
         [Browsable(false)]
-        public static IPluginsHost Default => _default ?? (_default = new PluginsHost());
+        public static IPluginsHost Default => _default ??= new PluginsHost();
 
         [ImportMany(typeof(IPlugin))]
         public List<IPlugin> Plugins { get; private set; }

@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace CodingConnected.Composition.Example.WPF.Core.InternalPlugins
 {
     /// <summary>
-    /// Interaction logic for ExamplePluginTabView.xaml
+    /// Interaction logic for ExamplePluginToolBarView.xaml
     /// </summary>
-    public partial class ExamplePluginTabView : UserControl
+    public partial class ExamplePluginToolBarView : UserControl
     {
-        public ExamplePluginTabView()
+        public ExamplePluginToolBarView()
         {
             InitializeComponent();
         }

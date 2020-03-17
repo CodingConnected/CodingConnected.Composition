@@ -27,6 +27,10 @@ namespace CodingConnected.Composition
         internal static List<ExportedType> ExportedTypes { get; } = new List<ExportedType>();
         internal static Dictionary<Type, object> SingletonInstances { get; } = new Dictionary<Type, object>();
 
+        /// <summary>
+        /// Loads exported types from a given assembly
+        /// </summary>
+        /// <param name="assembly">The assembly to search for exported types</param>
         public static void LoadExports(Assembly assembly)
         {
             foreach (var type in assembly.GetExportedTypes())
@@ -57,21 +61,28 @@ namespace CodingConnected.Composition
             return SingletonInstances[type];
         }
 
+        /// <summary>
+        /// Compose an object: all properties of the object decorated with an
+        /// Import or ImportMany attribute, will be instantiated accordingly
+        /// </summary>
+        /// <param name="root">The object to compose</param>
         public static void Compose(object root)
         {
             if (root == null) return;
 
             foreach (var prop in root.GetType().GetProperties())
             {
-                if (!prop.PropertyType.IsGenericType) continue;
-
                 var browsable = prop.GetCustomAttribute<BrowsableAttribute>();
                 if (browsable != null && !browsable.Browsable) continue;
 
                 var attribs = prop.GetCustomAttributes().ToArray();
                 if (attribs.Length == 0 && !prop.PropertyType.IsValueType && prop.PropertyType != typeof(string))
                 {
-                    Compose(prop.GetValue(root));
+                    // Recursive composition is only allowed for generic types for now
+                    if (prop.PropertyType.IsGenericType)
+                    {
+                        Compose(prop.GetValue(root));
+                    }
                 }
 
                 foreach (var attrib in attribs)
@@ -103,6 +114,11 @@ namespace CodingConnected.Composition
                             Compose(instance);
                             break;
                         case ImportManyAttribute ima:
+                            if (!prop.PropertyType.IsGenericType)
+                            {
+                                throw new Exception("ImportMany can only be applied on generic types");
+                            }
+
                             exportedTypes = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType).ToArray();
                             if (exportedTypes.Length == 0)
                             {
@@ -116,13 +132,14 @@ namespace CodingConnected.Composition
                                 Compose(listItem);
                                 instanceList.Add(listItem);
                             }
+
                             try
                             {
                                 prop.SetValue(root, instanceList);
                             }
-                            catch (Exception e)
+                            catch (ArgumentException)
                             {
-                                throw new Exception("No setter found on property " + prop.Name);
+                                throw new Exception("No setter found for property " + prop.Name + ", or wrong type");
                             }
                             break;
                     }

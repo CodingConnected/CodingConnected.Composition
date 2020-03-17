@@ -19,7 +19,9 @@ namespace CodingConnected.Composition.Example.NETFramework
             Composer.Compose(main);
 
             Console.WriteLine($"Loaded {((Calculator)main.Calculator).Commands.Count()} commands");
-            Console.WriteLine("Enter command (eg. \"4+6\") followed by the enter key; enter \"exit\" to exit:");
+            Console.WriteLine("Enter a command (eg. \"4+6\") followed by the enter key.");
+            Console.WriteLine("Alternatively, use reverse Polish notation (eg. \"+ 4 6\")6+6.");
+            Console.WriteLine("Enter \"exit\" to exit:");
 
             var command = "";
             while (command != "exit")

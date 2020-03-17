@@ -11,4 +11,14 @@
     <ProjectReference Include="..\CodingConnected.Composition.Example.WPF.IPlugins\CodingConnected.Composition.Example.WPF.IPlugins.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ExternalPluginToolBarView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

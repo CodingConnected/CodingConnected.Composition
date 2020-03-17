@@ -26,7 +26,7 @@ namespace CodingConnected.Composition.Example.NETFramework
         /// composition, is set to the same instance as the Calculator
         /// property of this class.
         /// </summary>
-        public ReversePolishNotationCalculationService RPNCalculationService { get; set; }
+        public ReversePolishNotationCalculationService RpnCalculationService { get; set; }
 
         public double ParseCommand(string command)
         {
@@ -35,7 +35,7 @@ namespace CodingConnected.Composition.Example.NETFramework
             {
                 try
                 {
-                    return RPNCalculationService.ProcessCommand(command);
+                    return RpnCalculationService.ProcessCommand(command);
                 }
                 catch
                 {
@@ -53,7 +53,9 @@ namespace CodingConnected.Composition.Example.NETFramework
 
         public CalculationService()
         {
-            RPNCalculationService = new ReversePolishNotationCalculationService();
+            RpnCalculationService = new ReversePolishNotationCalculationService();
+            // We need to call compose here, since recursive composition is not yet fully supported
+            Composer.Compose(RpnCalculationService);
         }
     }
 }

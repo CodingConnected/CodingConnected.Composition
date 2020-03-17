@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CodingConnected.Composition\CodingConnected.Composition.csproj" />
+    <ProjectReference Include="..\..\..\CodingConnected.Composition\CodingConnected.Composition.csproj" />
     <ProjectReference Include="..\CodingConnected.Composition.Example.Interfaces\CodingConnected.Composition.Example.Interfaces.csproj" />
   </ItemGroup>
 

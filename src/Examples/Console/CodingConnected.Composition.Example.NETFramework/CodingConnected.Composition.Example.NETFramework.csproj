@@ -55,7 +55,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CodingConnected.Composition\CodingConnected.Composition.csproj">
+    <ProjectReference Include="..\..\..\CodingConnected.Composition\CodingConnected.Composition.csproj">
       <Project>{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}</Project>
       <Name>CodingConnected.Composition</Name>
     </ProjectReference>

@@ -1,20 +1,8 @@
-﻿using CodingConnected.Composition.Example.WPF.Plugins;
-using System;
-using System.Collections.Generic;
+﻿using CodingConnected.Composition.Example.WPF.IPlugins;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CodingConnected.Composition.Example.WPF.Core
 {
@@ -41,7 +29,7 @@ namespace CodingConnected.Composition.Example.WPF.Core
                 if (!(e.NewValue is MainWindowViewModel vm)) return;
                 foreach (var pl in PluginsHost.Default.Plugins)
                 {
-                    if (pl is IToolbar itb)
+                    if (pl is IToolBar itb)
                     {
                         var tb = new ToolBar();
                         tb.Items.Add(itb.ToolBarView);

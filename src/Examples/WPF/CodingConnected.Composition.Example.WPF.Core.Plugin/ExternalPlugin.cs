@@ -4,18 +4,19 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CodingConnected.Composition.Annotations;
+using CodingConnected.Composition.Example.WPF.IPlugins;
 using CodingConnected.Composition.Example.WPF.MVVM;
-using CodingConnected.Composition.Example.WPF.Plugins;
 
 namespace CodingConnected.Composition.Example.WPF.Core.Plugin
 {
     [Export(typeof(IPlugin))]
-    public class ExternalPlugin : IPlugin, ITabItem, IMenuItem
+    public class ExternalPlugin : IPlugin, ITabItem, IMenuItem, IToolBar
     {
         #region Fields
 
         private DataTemplate _contentDataTemplate;
         private MenuItem _menu;
+        private ImageSource _icon;
 
         #endregion // Fields
 
@@ -32,7 +33,23 @@ namespace CodingConnected.Composition.Example.WPF.Core.Plugin
 
         public string DisplayName => "External";
 
-        public ImageSource Icon => null;
+        public ImageSource Icon
+        {
+            get
+            {
+                if (_icon == null)
+                {
+                    var dict = new ResourceDictionary();
+                    var u = new Uri("pack://application:,,,/" +
+                                    System.Reflection.Assembly.GetExecutingAssembly().GetName().Name +
+                                    ";component/" + "Resources/Icons.xaml");
+                    dict.Source = u;
+                    _icon = (DrawingImage) dict["ExternalDrawingImage"];
+                }
+
+                return _icon;
+            }
+        }
 
         public DataTemplate ContentDataTemplate
         {
@@ -45,26 +62,38 @@ namespace CodingConnected.Composition.Example.WPF.Core.Plugin
                     tab.SetValue(FrameworkElement.DataContextProperty, new ExternalPluginTabViewModel());
                     _contentDataTemplate.VisualTree = tab;
                 }
+
                 return _contentDataTemplate;
             }
         }
 
-        public bool IsEnabled { get; set; } = true;
+        public bool IsTabItemEnabled { get; set; } = true;
 
         #endregion // ITabItem
 
         #region IMenuItem
         
-        public MenuItem Menu => _menu ??
-            (_menu = new MenuItem
+        public MenuItem Menu => _menu ??= new MenuItem
+        {
+            Header = "External plugin",
+            Icon = new Image{Source = Icon},
+            Command = new RelayCommand(x =>
             {
-                Header = "Example",
-                Command = new RelayCommand(x =>
-                {
-                    MessageBox.Show("Example plugin menu item clicked");
-                })
-            });
+                MessageBox.Show("External example plugin menu item clicked");
+            })
+        };
 
         #endregion // IMenuItem
+
+        #region IToolBar
+
+        public UserControl ToolBarView => new ExternalPluginToolBarView
+        {
+            DataContext = new ExternalPluginToolBarViewModel()
+        };
+
+        public bool IsToolBarEnabled { get; set; } = true;
+        
+        #endregion // IToolBar
     }
 }

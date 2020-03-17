@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.NETFramework", "Examples\CodingConnected.Composition.Example.NETFramework\CodingConnected.Composition.Example.NETFramework.csproj", "{796E594C-0648-4BFB-9C65-36A8947ACA5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.NETFramework", "Examples\Console\CodingConnected.Composition.Example.NETFramework\CodingConnected.Composition.Example.NETFramework.csproj", "{796E594C-0648-4BFB-9C65-36A8947ACA5C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{94D79702-95AF-4B4E-8ECD-77269200019E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition", "CodingConnected.Composition\CodingConnected.Composition.csproj", "{7D12FBB9-1EBA-4597-8CC4-C91D5DBD1012}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.NetStandardLib", "Examples\CodingConnected.Composition.Example.NetStandardLib\CodingConnected.Composition.Example.NetStandardLib.csproj", "{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.NetStandardLib", "Examples\Console\CodingConnected.Composition.Example.NetStandardLib\CodingConnected.Composition.Example.NetStandardLib.csproj", "{C0FBC61D-496B-4CC4-9681-93DEFA8F6476}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.Interfaces", "Examples\CodingConnected.Composition.Example.Interfaces\CodingConnected.Composition.Example.Interfaces.csproj", "{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.Interfaces", "Examples\Console\CodingConnected.Composition.Example.Interfaces\CodingConnected.Composition.Example.Interfaces.csproj", "{0A2C4456-F405-4BEF-9321-1669E7E0A7C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C08950C3-DDF8-42BA-BBB9-B485F8EDBEA0}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,9 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.WPF.IPlugins", "Examples\WPF\CodingConnected.Composition.Example.WPF.IPlugins\CodingConnected.Composition.Example.WPF.IPlugins.csproj", "{921EE4AC-959D-4416-AEE8-CDA0B34A7433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.WPF.Core.Plugin", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.Plugin\CodingConnected.Composition.Example.WPF.Core.Plugin.csproj", "{178F82F0-2685-47E8-B672-B06C1B8777FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.WPF.Core.Plugin", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.Plugin\CodingConnected.Composition.Example.WPF.Core.Plugin.csproj", "{178F82F0-2685-47E8-B672-B06C1B8777FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingConnected.Composition.Example.WPF.Core.MVVM", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.MVVM\CodingConnected.Composition.Example.WPF.Core.MVVM.csproj", "{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodingConnected.Composition.Example.WPF.Core.MVVM", "Examples\WPF\CodingConnected.Composition.Example.WPF.Core.MVVM\CodingConnected.Composition.Example.WPF.Core.MVVM.csproj", "{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{C6204C1D-28A0-4E31-A975-E5A95AE56381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,14 +79,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{796E594C-0648-4BFB-9C65-36A8947ACA5C} = {94D79702-95AF-4B4E-8ECD-77269200019E}
-		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476} = {94D79702-95AF-4B4E-8ECD-77269200019E}
-		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6} = {94D79702-95AF-4B4E-8ECD-77269200019E}
+		{796E594C-0648-4BFB-9C65-36A8947ACA5C} = {C6204C1D-28A0-4E31-A975-E5A95AE56381}
+		{C0FBC61D-496B-4CC4-9681-93DEFA8F6476} = {C6204C1D-28A0-4E31-A975-E5A95AE56381}
+		{0A2C4456-F405-4BEF-9321-1669E7E0A7C6} = {C6204C1D-28A0-4E31-A975-E5A95AE56381}
 		{4AC464DB-16AA-4F17-8A5F-B838BB4EE968} = {94D79702-95AF-4B4E-8ECD-77269200019E}
 		{6672D603-C7C4-4AB7-BAC4-9C3887612672} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
 		{921EE4AC-959D-4416-AEE8-CDA0B34A7433} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
 		{178F82F0-2685-47E8-B672-B06C1B8777FC} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
 		{CE0621F5-7A12-45F5-A6D8-3295F7EE13A3} = {4AC464DB-16AA-4F17-8A5F-B838BB4EE968}
+		{C6204C1D-28A0-4E31-A975-E5A95AE56381} = {94D79702-95AF-4B4E-8ECD-77269200019E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {006F947F-5ABB-4E76-BDD0-166E95197AC1}

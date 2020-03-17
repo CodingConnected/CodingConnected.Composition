@@ -1,5 +1,5 @@
 ﻿using CodingConnected.Composition.Example.WPF.MVVM;
-using CodingConnected.Composition.Example.WPF.Plugins;
+using CodingConnected.Composition.Example.WPF.IPlugins;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;

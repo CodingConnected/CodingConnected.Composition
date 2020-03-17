@@ -1,4 +1,4 @@
-﻿using CodingConnected.Composition.Example.WPF.Plugins;
+﻿using CodingConnected.Composition.Example.WPF.IPlugins;
 using System.Collections.Generic;
 
 namespace CodingConnected.Composition.Example.WPF.Core

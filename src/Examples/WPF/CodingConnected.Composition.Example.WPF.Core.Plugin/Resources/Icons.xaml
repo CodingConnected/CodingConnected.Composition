@@ -1,0 +1,42 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Geometry x:Key="ExternalGeometry1">F1 M60.000003,60.000001z M0,0z M375.69856,480.02469C382.72981,492.20317 370.55133,499.23442 370.55133,499.23442 370.55133,499.23442 358.37285,506.26567 351.3416,494.08719</Geometry>
+  <Geometry x:Key="ExternalGeometry2">F1 M60.000003,60.000001z M0,0z M339.5309,479.25547L339.5309,479.25547A4.6875,4.6875,0,0,0,345.93415,480.97121A4.6875,4.6875,0,0,0,347.64989,474.56797</Geometry>
+  <DrawingGroup x:Key="ExternalDrawingGroup" ClipGeometry="M0,0 V60.000001 H60.000003 V0 H0 Z">
+    <DrawingGroup.Transform>
+      <TranslateTransform X="98.9279" Y="0" />
+    </DrawingGroup.Transform>
+    <DrawingGroup Opacity="1" Transform="1,0,0,1,-330.23883,-451.37265">
+      <DrawingGroup Transform="-0.8660254,0.5,0.5,0.8660254,0,0">
+        <GeometryDrawing>
+          <GeometryDrawing.Pen>
+            <Pen Brush="#FFFF6600" Thickness="4.72332096" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+          </GeometryDrawing.Pen>
+          <GeometryDrawing.Geometry>
+            <EllipseGeometry RadiusX="27.6383" RadiusY="27.6383" Center="-71.2896,597.0004" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingGroup>
+      <GeometryDrawing Geometry="{StaticResource ExternalGeometry1}">
+        <GeometryDrawing.Pen>
+          <Pen Brush="#FFFF6600" Thickness="4.72332096" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+        </GeometryDrawing.Pen>
+      </GeometryDrawing>
+      <DrawingGroup Transform="-0.8660254,0.5,0.5,0.8660254,0,0">
+        <GeometryDrawing Brush="#FF000000">
+          <GeometryDrawing.Pen>
+            <Pen Brush="#FFFF6600" Thickness="4.72332096" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+          </GeometryDrawing.Pen>
+          <GeometryDrawing.Geometry>
+            <EllipseGeometry RadiusX="4.6875" RadiusY="4.6875" Center="-82.5396,584.8129" />
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingGroup>
+      <GeometryDrawing Geometry="{StaticResource ExternalGeometry2}">
+        <GeometryDrawing.Pen>
+          <Pen Brush="#FFFF6600" Thickness="4.72332096" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" />
+        </GeometryDrawing.Pen>
+      </GeometryDrawing>
+    </DrawingGroup>
+  </DrawingGroup>
+  <DrawingImage x:Key="ExternalDrawingImage" Drawing="{StaticResource ExternalDrawingGroup}" />
+</ResourceDictionary>

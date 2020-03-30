@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using CodingConnected.Composition.Annotations;
 
 namespace CodingConnected.Composition
@@ -28,11 +30,41 @@ namespace CodingConnected.Composition
         internal static Dictionary<Type, object> SingletonInstances { get; } = new Dictionary<Type, object>();
 
         /// <summary>
+        /// Loads exported types from an assembly as a given location
+        /// </summary>
+        /// <param name="assemblyPath">The path to the assembly to search for exported types</param>
+        /// <param name="signedOnly">Only load exported types from this assembly if the assembly has been digitally signed</param>
+        /// <param name="actionIfUnsigned">If only signed assemblies should be loaded, and this assembly is not signed, load
+        /// exported types nonetheless if this action returns true</param>
+        public static void LoadExports(string assemblyPath, bool signedOnly = false, Func<Assembly, bool> actionIfUnsigned = null)
+        {
+            LoadExports(Assembly.LoadFile(assemblyPath), signedOnly, actionIfUnsigned);
+        }
+
+        /// <summary>
         /// Loads exported types from a given assembly
         /// </summary>
         /// <param name="assembly">The assembly to search for exported types</param>
-        public static void LoadExports(Assembly assembly)
+        /// <param name="signedOnly">Only load exported types from this assembly if the assembly has been digitally signed</param>
+        /// <param name="actionIfUnsigned">If only signed assemblies should be loaded, and this assembly is not signed, load
+        /// exported types nonetheless if this action returns true</param>
+        public static void LoadExports(Assembly assembly, bool signedOnly = false, Func<Assembly, bool> actionIfUnsigned = null)
         {
+            if (signedOnly)
+            {
+                try
+                {
+                    X509Certificate.CreateFromSignedFile(assembly.Location);
+                }
+                catch (CryptographicException e)
+                {
+                    if (actionIfUnsigned == null || !actionIfUnsigned(assembly))
+                    {
+                        return;
+                    }
+                }
+            }
+
             foreach (var type in assembly.GetExportedTypes())
             {
                 var custom = type.GetCustomAttributes();
@@ -63,14 +95,31 @@ namespace CodingConnected.Composition
 
         /// <summary>
         /// Compose an object: all properties of the object decorated with an
-        /// Import or ImportMany attribute, will be instantiated accordingly
+        /// Import or ImportMany attribute, will be instantiated accordingly.
+        /// Alternatively, if a Type if provided, it will be scanned for public
+        /// static properties marked for import.
         /// </summary>
-        /// <param name="root">The object to compose</param>
+        /// <param name="root">The object to compose, or a type if composing must be done for static properties of a class</param>
         public static void Compose(object root)
         {
             if (root == null) return;
 
-            foreach (var prop in root.GetType().GetProperties())
+            PropertyInfo[] infos;
+            object obj;
+
+            if (root is Type rootType)
+            {
+                obj = null;
+                infos = rootType.GetProperties(
+                    BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            }
+            else
+            {
+                obj = root;
+                infos = root.GetType().GetProperties();
+            }
+
+            foreach (var prop in infos)
             {
                 var browsable = prop.GetCustomAttribute<BrowsableAttribute>();
                 if (browsable != null && !browsable.Browsable) continue;
@@ -110,7 +159,7 @@ namespace CodingConnected.Composition
                                     instance = GetSingleton(exportedTypes[0].ActualType);
                                     break;
                             }
-                            prop.SetValue(root, instance);
+                            prop.SetValue(obj, instance);
                             Compose(instance);
                             break;
                         case ImportManyAttribute ima:
@@ -120,10 +169,6 @@ namespace CodingConnected.Composition
                             }
 
                             exportedTypes = ExportedTypes.Where(x => x.ExposedType == ima.ImportedType).ToArray();
-                            if (exportedTypes.Length == 0)
-                            {
-                                throw new Exception($"No exported type matched imported type {ima.ImportedType.FullName}");
-                            }
                             var constructedListType = typeof(List<>).MakeGenericType(ima.ImportedType);
                             var instanceList = (IList)Activator.CreateInstance(constructedListType);
                             foreach (var t in exportedTypes)
@@ -135,7 +180,7 @@ namespace CodingConnected.Composition
 
                             try
                             {
-                                prop.SetValue(root, instanceList);
+                                prop.SetValue(obj, instanceList);
                             }
                             catch (ArgumentException)
                             {

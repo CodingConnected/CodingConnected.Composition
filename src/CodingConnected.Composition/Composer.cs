@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -83,6 +84,15 @@ namespace CodingConnected.Composition
             }
         }
 
+        public static void AddExportedType(Type actualType, Type exportedAsType, bool exportMany = false)
+        {
+            if (ExportedTypes.Any(x => x.ExposedType == exportedAsType))
+            {
+                throw new Exception($"Type {exportedAsType.FullName} has already been exported");
+            }
+            ExportedTypes.Add(new ExportedType(actualType, exportedAsType, exportMany));
+        }
+
         internal static object GetSingleton(Type type)
         {
             if (!SingletonInstances.ContainsKey(type))
@@ -110,6 +120,11 @@ namespace CodingConnected.Composition
         public static T CreateAndCompose<T>(params object[] nonComposedParams)
         {
             var type = typeof(T);
+            return (T) CreateAndCompose(type, nonComposedParams);
+        }
+
+        public static object CreateAndCompose(Type type, params object[] nonComposedParams)
+        {
             var nonComposedParamsList = nonComposedParams.ToList();
             var constructor = type.GetConstructors().FirstOrDefault(x => x.IsPublic);
             if (constructor == null)
@@ -121,6 +136,19 @@ namespace CodingConnected.Composition
             foreach (var prmInfo in constructor.GetParameters())
             {
                 var prm = nonComposedParamsList.FirstOrDefault(x => x.GetType() == prmInfo.ParameterType);
+                if (prm == null)
+                {
+                    foreach (var p in nonComposedParams)
+                    {
+                        var pt = p.GetType();
+                        var interfaces = pt.GetInterfaces();
+                        if (interfaces.Any(x => x == prmInfo.ParameterType))
+                        {
+                            prm = p;
+                            break;
+                        }
+                    }
+                }
                 if (prm != null)
                 {
                     nonComposedParamsList.Remove(prm);
@@ -128,8 +156,8 @@ namespace CodingConnected.Composition
                 }
                 else if (prmInfo.ParameterType.IsInterface)
                 {
-                    // TODO catch exceptions.
-                    var singletonType = ExportedTypes.FirstOrDefault(x => x.ExposedType == prmInfo.ParameterType).ActualType;
+                    var singletonType = ExportedTypes.FirstOrDefault(x => x.ExposedType == prmInfo.ParameterType)?.ActualType;
+                    if (singletonType == null) throw new NullReferenceException($"No type {prmInfo.ParameterType.FullName} could be matched with any exported type");
                     var singleton = GetSingleton(singletonType);
                     constructorArgs.Add(singleton);
                 }
@@ -139,11 +167,27 @@ namespace CodingConnected.Composition
                 }
             }
 
-            var o = (T)constructor.Invoke(constructorArgs.ToArray());
+            var o = constructor.Invoke(constructorArgs.ToArray());
 
             Compose(o);
 
             return o;
+        }
+
+        public static object GetExportedTypeInstance(Type type)
+        {
+            var t = ExportedTypes.FirstOrDefault(x => x.ExposedType == type);
+            if (t == null)
+            {
+                throw new NullReferenceException($"No type {type.FullName} has been exported");
+            }
+            switch (t.Many)
+            {
+                case true:
+                    return CreateAndCompose(t.ActualType);
+                default:
+                    return GetSingleton(t.ActualType);
+            }
         }
 
         /// <summary>
@@ -169,7 +213,7 @@ namespace CodingConnected.Composition
             else
             {
                 obj = root;
-                infos = root.GetType().GetProperties(BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+                infos = root.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
             }
 
             foreach (var prop in infos)
@@ -206,14 +250,13 @@ namespace CodingConnected.Composition
                             switch (exportedTypes[0].Many)
                             {
                                 case true:
-                                    instance = Activator.CreateInstance(exportedTypes[0].ActualType);
+                                    instance = CreateAndCompose(exportedTypes[0].ActualType);
                                     break;
                                 default:
                                     instance = GetSingleton(exportedTypes[0].ActualType);
                                     break;
                             }
                             prop.SetValue(obj, instance);
-                            Compose(instance);
                             break;
                         case ImportManyAttribute ima:
                             if (!prop.PropertyType.IsGenericType)
@@ -226,8 +269,7 @@ namespace CodingConnected.Composition
                             var instanceList = (IList)Activator.CreateInstance(constructedListType);
                             foreach (var t in exportedTypes)
                             {
-                                var listItem = Activator.CreateInstance(t.ActualType);
-                                Compose(listItem);
+                                var listItem = instance = CreateAndCompose(t.ActualType);
                                 instanceList.Add(listItem);
                             }
 

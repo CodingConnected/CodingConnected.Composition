@@ -94,6 +94,59 @@ namespace CodingConnected.Composition
         }
 
         /// <summary>
+        /// Create and compose an object: an object of type T will be created
+        /// using the first available public constructor.
+        /// During creation, all generic parameters of the constructor that are
+        /// not provided as arguments to this method, will be resolved by the
+        /// composer.
+        /// After creation the object will be composed: all properties of
+        /// the object decorated with an Import or ImportMany attribute,
+        /// will be instantiated accordingly.
+        /// </summary>
+        /// <typeparam name="T">The type of which an instance is to be constructed and composed</typeparam>
+        /// <param name="nonComposedParams">Any non-generic arguments that need to be supplied to the constructor, and/or
+        /// generic arguments that should not be set via composition</param>
+        /// <returns></returns>
+        public static T CreateAndCompose<T>(params object[] nonComposedParams)
+        {
+            var type = typeof(T);
+            var nonComposedParamsList = nonComposedParams.ToList();
+            var constructor = type.GetConstructors().FirstOrDefault(x => x.IsPublic);
+            if (constructor == null)
+            {
+                throw new NullReferenceException($"Type {type.FullName} contains no public constructor");
+            }
+            var constructorArgs = new List<object>();
+            var i = 0;
+            foreach (var prmInfo in constructor.GetParameters())
+            {
+                var prm = nonComposedParamsList.FirstOrDefault(x => x.GetType() == prmInfo.ParameterType);
+                if (prm != null)
+                {
+                    nonComposedParamsList.Remove(prm);
+                    constructorArgs.Add(prm);
+                }
+                else if (prmInfo.ParameterType.IsInterface)
+                {
+                    // TODO catch exceptions.
+                    var singletonType = ExportedTypes.FirstOrDefault(x => x.ExposedType == prmInfo.ParameterType).ActualType;
+                    var singleton = GetSingleton(singletonType);
+                    constructorArgs.Add(singleton);
+                }
+                else
+                {
+                    throw new Exception($"Found no matching argument for parameter {prmInfo.Name} in constructor for type {type.FullName}");
+                }
+            }
+
+            var o = (T)constructor.Invoke(constructorArgs.ToArray());
+
+            Compose(o);
+
+            return o;
+        }
+
+        /// <summary>
         /// Compose an object: all properties of the object decorated with an
         /// Import or ImportMany attribute, will be instantiated accordingly.
         /// Alternatively, if a Type if provided, it will be scanned for public
@@ -116,7 +169,7 @@ namespace CodingConnected.Composition
             else
             {
                 obj = root;
-                infos = root.GetType().GetProperties();
+                infos = root.GetType().GetProperties(BindingFlags.Instance | BindingFlags.FlattenHierarchy);
             }
 
             foreach (var prop in infos)

@@ -10,6 +10,7 @@
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <RepositoryUrl>https://github.com/CodingConnected/CodingConnected.Composition</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+	<Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

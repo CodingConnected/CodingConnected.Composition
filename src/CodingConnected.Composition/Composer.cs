@@ -39,7 +39,7 @@ namespace CodingConnected.Composition
         /// exported types nonetheless if this action returns true</param>
         public static void LoadExports(string assemblyPath, bool signedOnly = false, Func<Assembly, bool> actionIfUnsigned = null)
         {
-            LoadExports(Assembly.LoadFile(assemblyPath), signedOnly, actionIfUnsigned);
+            LoadExports(Assembly.LoadFrom(assemblyPath), signedOnly, actionIfUnsigned);
         }
 
         /// <summary>
@@ -82,6 +82,16 @@ namespace CodingConnected.Composition
                     }
                 }
             }
+        }
+
+        public static void AddSingleton(Type exportedAsType, object singleton)
+        {
+            if (ExportedTypes.Any(x => x.ExposedType == exportedAsType))
+            {
+                throw new Exception($"Type {exportedAsType.FullName} has already been exported");
+            }
+            ExportedTypes.Add(new ExportedType(typeof(object), exportedAsType, false));
+            SingletonInstances.Add(typeof(object), singleton);
         }
 
         public static void AddExportedType(Type actualType, Type exportedAsType, bool exportMany = false)
